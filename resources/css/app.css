@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&display=swap');
+@import url(https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700);
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+    scroll-behavior: smooth !important;
+}
+
+body {
+    font-family: 'Manrope', sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin-top: 0 !important;
+    font-family: 'DM Serif Display', serif;
+}
+
+.drawer-side {
+    z-index: 99 !important;
+}
+
+.navbar {
+    z-index: 98 !important;
+}
+
+.card-news {
+    cursor: pointer;
+}
+
+.card-news:hover img {
+    transform: scale(1.2);
+}
+
+figure, img {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+.fixed {
+	top: -40px;
+	    transform: translateY(40px);
+	    transition: transform .3s;
+}
+
+.container {
+    max-width: 1200px;
+}
+
+section {
+    min-height: 100vh;
+}
+
+.hero-img {
+    box-shadow: 0 0;
+}
+
+.btn-cta:hover {
+    transform: translateY(-6px);
+}
+
+@media (min-width: 1200px) {
+    .hero-img {
+        box-shadow: 36px 36px lightblue;
+    }
+}
+
+.drawer-side a.active {
+    background-color: unset !important;
+    color: unset !important;
+    font-weight: bold;
+    border-left: 4px solid #3F00E7 !important;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.drawer-side::-webkit-scrollbar {
+    display: none;
+}
+  
+/* Hide scrollbar for IE, Edge and Firefox */
+.drawer-side {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.menu li {
+    padding: 0 !important;
+}
