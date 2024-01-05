@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ClientController;
-
+use Illuminate\Http\Request;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,6 +19,8 @@ use App\Http\Controllers\ClientController;
 Route::controller(ClientController::class)->group(function () {
     Route::get('/', 'index')->name('client');
     Route::get('/news', 'news')->name('client.news');
+    Route::get('/news/{title}', 'newsDetail')->name('client.news.detail');
+    Route::get('/about', 'about')->name('client.about');
 });
 
 Route::controller(AuthController::class)->group(function () {
@@ -29,7 +31,8 @@ Route::controller(AuthController::class)->group(function () {
     Route::get('/auth/forgot-password', 'forgotPassword')->name('password.request')->middleware('isGuest');
     Route::post('/auth/forgot-password', 'requestResetPassword')->name('password.email')->middleware('isGuest');
     Route::get('auth/reset-password/{token}', function (string $token) {
-        return view('auth.reset-password', ['token' => $token]);
+        $email = $request->query('email');
+        return view('auth.reset-password', ['token' => $token, 'email' => $email]);
     })->name('password.reset')->middleware('isGuest');
     Route::post('/auth/reset-password', 'resetPassword')->name('password.update')->middleware('isGuest');
     Route::post('/logout', 'logout')->name('logout')->middleware('isLogin');
@@ -47,6 +50,13 @@ Route::controller(AdminController::class)->group(function () {
     Route::patch('/admin/home/update', 'updateHome')->name('admin.home.update')->middleware('isLogin');
     Route::get('/admin/about/edit', 'editAbout')->name('admin.about.edit')->middleware('isLogin');
     Route::patch('/admin/about/update', 'updateAbout')->name('admin.about.update')->middleware('isLogin');
+    Route::get('/admin/about/mision/create', 'createAboutMision')->name('admin.about.mision.create')->middleware('isLogin');
+    Route::post('/admin/about/mision/store', 'storeAboutMision')->name('admin.about.mision.store')->middleware('isLogin');
+    Route::get('/admin/about/mision/{id}/edit', 'editAboutMision')->name('admin.about.mision.edit')->middleware('isLogin');
+    Route::patch('/admin/about/mision/{id}/update', 'updateAboutMision')->name('admin.about.mision.update')->middleware('isLogin');
+    Route::delete('/admin/about/mision/{id}', 'destroyAboutMision')->name('admin.about.mision.destroy')->middleware('isLogin');
+
+
     Route::get('/admin/contact/edit', 'editContact')->name('admin.contact.edit')->middleware('isLogin');
     
     Route::get('/admin/anggota', 'listAnggota')->name('admin.anggota')->middleware('isLogin');

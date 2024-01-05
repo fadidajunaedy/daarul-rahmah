@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->longText('background');
             $table->longText('vision');
-            $table->longText('mision');
             $table->timestamps();
         });
     }

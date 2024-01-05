@@ -8,7 +8,6 @@
             <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
                 <li><a>Beranda</a></li>
                 <li><a>Tentang Kami</a></li>
-                <li><a>Kegiatan</a></li>
                 <li><a>Berita</a></li>
                 <li><a>Kontak</a></li>
             </ul>
@@ -17,10 +16,9 @@
         </div>
         <div class="navbar-end hidden lg:flex">
             <ul class="menu menu-horizontal px-1">
-                <li><a>Beranda</a></li>
-                <li><a>Tentang Kami</a></li>
-                <li><a>Kegiatan</a></li>
-                <li><a>Berita</a></li>
+                <li><a href="{{ route('client') }}" class="{{ Route::is('client') ? 'active' : '' }}">Beranda</a></li>
+                <li><a href="{{ route('client.about') }}" class="{{ Route::is('client.about') ? 'active' : '' }}">Tentang Kami</a></li>
+                <li><a href="{{ route('client.news') }}" class="{{ Route::is('client.news*') ? 'active' : '' }}">Berita</a></li>
                 <li><a>Kontak</a></li>
             </ul>
         </div>

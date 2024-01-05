@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Home;
 use App\Models\About;
+use App\Models\Mision;
 use App\Models\Contact;
 use App\Models\News;
 use App\Models\Donate;
@@ -73,7 +74,8 @@ class AdminController extends Controller
     public function editAbout()
     {
         $data = About::where('id', 1)->first();
-        return view('admin.about.edit')->with('data', $data);
+        $mision = Mision::orderBy('id', 'asc')->get();
+        return view('admin.about.edit', compact('data', 'mision'));
     }
 
     public function updateAbout(Request $request)
@@ -81,7 +83,6 @@ class AdminController extends Controller
         $validator = Validator::make($request->all(), [
             'background' => ['required', 'string'],
             'vision' => ['required', 'string'],
-            'mision' => ['required', 'string']
         ], [
             'required' => 'Kolom :attribute harus diisi.'
         ]);
@@ -98,11 +99,80 @@ class AdminController extends Controller
         $data = [
             'background' => $request->background,
             'vision' => $request->vision,
-            'mision' => $request->mision
         ];
 
         About::where('id', 1)->update($data);
         return redirect()->back()->with('success', 'Berhasil update data!');
+    }
+
+    public function createAboutMision()
+    {
+        return view('admin.about.create-mision');
+    }
+
+    public function storeAboutMision(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'title' => ['required', 'string'],
+            'description' => ['required', 'string'],
+        ], [
+            'required' => 'Kolom :attribute harus diisi.'
+        ]);
+
+        $mision = Mision::create([
+            'about_id' => 1,
+            'title' => $request->title,
+            'description' => $request->description,
+        ]);
+
+        return redirect()->route('admin.about.edit')->with('success', 'Berhasil create data!');
+
+
+    }
+
+    public function editAboutMision(string $id)
+    {
+        $data = Mision::where('id', $id)->first();
+        return view('admin.about.edit-mision')->with('data', $data);
+    }
+
+    public function updateAboutMision(Request $request, string $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'title' => ['required', 'string'],
+            'description' => ['required', 'string'],
+        ], [
+            'required' => 'Kolom :attribute harus diisi.'
+        ]);
+    
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $mision = Mision::where('id', $id)->first();
+        if (!$mision) {
+            return redirect()->back()->withErrors("Mision is not found")->withInput();
+        }
+
+        $data = [
+            'title' => $request->title,
+            'description' => $request->description,
+        ];
+
+        Mision::where('id', $id)->update($data);
+        return redirect()->back()->with('success', 'Berhasil update data!');
+    }
+
+    public function destroyAboutMision(string $id)
+    {
+        $mision = Mision::where('id', $id)->first();
+
+        if (!$mision) {
+            return redirect()->back()->withErrors("Mision is not found")->withInput();
+        }
+
+        Mision::where('id', $id)->delete();
+
+        return redirect()->back()->with('success', 'Berhasil delete data!');
     }
 
     // ANGGOTA (USER)
