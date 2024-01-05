@@ -50,7 +50,7 @@
         class="btn btn-primary btn-cta"
         >Create</a>
     </div>
-    <div class="bg-base-100 p-4 rounded-xl shadow-x">
+    <div class="bg-base-100 p-4 rounded-xl shadow-xl">
         <div class="overflow-x-auto">
             <table class="table">
                 <thead>
@@ -109,6 +109,7 @@
                     @endforeach
                 </tbody>
             </table>
+        </div>
     </div>
 </section>
 @endsection
