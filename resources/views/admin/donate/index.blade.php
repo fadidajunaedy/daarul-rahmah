@@ -36,7 +36,7 @@
                         <th>Jumlah</th>
                         <th>Created User</th>
                         <th>Created At</th>
-                        <th class="text-center">Aksi</th>
+                        <th class="text-center"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -53,6 +53,7 @@
                         <td>{{ $item->createdUser }}</td>
                         <td>{{ \Carbon\Carbon::parse($item->created_at)->diffForHumans() }}</td>
                         <td>
+                            @if ((auth()->user()->role == 'admin') || (auth()->user()->role == 'super-admin'))   
                             <div class="flex justify-center items-center gap-2">
                                 <a href="{{ url('admin/donate/'.$item->id).'/edit'}}" class="btn btn-square btn-warning btn-cta">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#FFFFFF" class="bi bi-pencil-square" viewBox="0 0 16 16">
@@ -67,6 +68,8 @@
                                     </svg>
                                 </button>
                             </div>
+                            @endif
+
                         </td>
                     </tr>
                     <dialog id="modalConfirm{{ $item->id }}" class="modal bg-base-200 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-10">

@@ -13,7 +13,7 @@
             </div>
             <input type="email" name="email" class="input input-lg input-bordered w-full"/>
         </label>
-        <button type="submit" class="btn btn-lg btn-cta btn-primary rounded-full">Submit</button>
+        <button type="submit" class="btn btn-lg btn-cta btn-primary">Submit</button>
         <span class="text-center">Belum punya akun?&nbsp;<a href={{ route("register") }} class="link">Register</a></span>
     </form>
 </div>

@@ -27,7 +27,7 @@
                 </button>
               </div>
         </label>
-        <button type="submit" class="btn btn-lg btn-cta btn-primary rounded-full">Login</button>
+        <button type="submit" class="btn btn-lg btn-cta btn-primary">Login</button>
         <a href={{ route('password.request') }} class="link text-center">Lupa Password?</a>
         <span class="text-center">Belum punya akun?&nbsp;<a href={{ route("register") }} class="link">Register</a></span>
     </form>

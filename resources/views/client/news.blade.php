@@ -1,19 +1,10 @@
 @extends('client.layout.template')
 @section('content')
-{{-- MISSION --}}
-<div class="container mx-auto px-4 mt-4 mb-8">
-    <div class="breadcrumbs px-0 ">
-        <ul class="mx-0 px-0 my-0">
-          <li class="mx-0 px-0"><a href="{{ route('client') }}">Beranda</a></li> 
-          <li class="mx-0 px-0">Berita</li> 
-        </ul>
-    </div>
-    <div class="flex flex-col justify-center items-center jumbotron min-h-[50vh] rounded-lg shadow-xl">
-        <h1 class="text-center">Daarul Rahmah Dalam Berita</h1>
-    </div>
+<div class="flex flex-col justify-center items-center bg-slate-500 min-h-[60vh] shadow-xl px-4 py-6">
+    <h1 class="text-center text-base-100">Daarul Rahmah Dalam Berita</h1>
 </div>
-<section class="container mx-auto px-4">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+<section class="container mx-auto px-4 py-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-items-center">
         @foreach ($news as $n)
         <a href="{{ url('news/'.$n->title) }}" class="card card-news bg-base-100 shadow-xl overflow-hidden">
             <figure class="h-[280px] overflow-hidden">

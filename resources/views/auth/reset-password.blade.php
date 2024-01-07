@@ -68,7 +68,7 @@
                 </button>
             </div>
         </label>
-        <button type="submit" class="btn btn-lg btn-cta btn-primary rounded-full">Reset</button>
+        <button type="submit" class="btn btn-lg btn-cta btn-primary">Reset</button>
     </form>
 </div>
 <script>

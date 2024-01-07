@@ -7,6 +7,7 @@ use App\Models\Home;
 use App\Models\About;
 use App\Models\Mision;
 use App\Models\Contact;
+use App\Models\Activity;
 use App\Models\News;
 use App\Models\Donate;
 use App\Models\Cash;
@@ -22,7 +23,66 @@ class AdminController extends Controller
 {
     public function index()
     {
-        return view('admin.index');
+        $totalAnggota = User::where('role', 'anggota')->count();
+        $totalAdmin = User::where('role', 'admin')->count();
+        $totalBerita = News::count();
+        $totalJumlahDonasi = Donate::sum('amount');
+        $totalJumlahKas = Cash::sum('amount');
+        return view('admin.index', compact('totalAnggota', 'totalAdmin', 'totalBerita', 'totalJumlahDonasi', 'totalJumlahKas'));
+    }
+
+    public function editProfile() {
+        $data = User::where('id', auth()->user()->id)->first();
+        return view('admin.profile.edit')->with('data', $data);
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => ['required', 'string'],
+            'username' => ['required', 'string'],
+            'phone' => ['required', 'string'],
+        ], [
+            'required' => 'Kolom :attribute harus diisi.'
+        ]);
+    
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $user = User::where('id', auth()->user()->id)->first();
+        if (!$user) {
+            return redirect()->back()->withErrors("User is not found")->withInput();
+        }
+
+        $data = [
+            'name' => $request->name,
+            'username' => $request->username,
+            'phone' => $request->phone,
+        ];
+
+        User::where('id', auth()->user()->id)->update($data);
+        return redirect()->back()->with('success', 'Berhasil update data!');
+    }
+
+    public function changePassword(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'current_password' => ['required', 'string'],
+            'new_password' => ['required', 'string', 'confirmed'],
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        if(!Hash::check($request->current_password, auth()->user()->password)) {
+            return back()->withErrors("Password saat ini tidak sesuai");
+        }
+        User::where('id',auth()->user()->id)->update(['password'=> Hash::make($request->new_password)]);
+        return back()->with("success", "Berhasil merubah password!");
     }
 
     public function editHome()
@@ -110,7 +170,8 @@ class AdminController extends Controller
         return view('admin.about.create-mision');
     }
 
-    public function storeAboutMision(Request $request) {
+    public function storeAboutMision(Request $request) 
+    {
         $validator = Validator::make($request->all(), [
             'title' => ['required', 'string'],
             'description' => ['required', 'string'],
@@ -175,8 +236,161 @@ class AdminController extends Controller
         return redirect()->back()->with('success', 'Berhasil delete data!');
     }
 
+    public function editContact()
+    {
+        $data = Contact::where('id', 1)->first();
+        return view('admin.contact.edit')->with('data', $data);
+    }
+
+    public function updateContact(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'address' => ['required', 'string'],
+            'phone' => ['required', 'string'],
+            'email' => ['required', 'string'],
+            'latitude' => ['required', 'string'],
+            'longitude' => ['required', 'string'],
+        ], [
+            'required' => 'Kolom :attribute harus diisi.'
+        ]);
+    
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $contact = Contact::where('id', 1)->first();
+        if (!$contact) {
+            return redirect()->back()->withErrors("Contact is not found")->withInput();
+        }
+
+        $data = [
+            'address' => $request->address,
+            'phone' => $request->phone,
+            'email' => $request->email,
+            'latitude' => $request->latitude,
+            'longitude' => $request->longitude,
+        ];
+
+        Contact::where('id', 1)->update($data);
+        return redirect()->back()->with('success', 'Berhasil update data!');
+    }
+
+    public function listActivity(Request $request)
+    {   
+        $keyword = $request->keyword;
+
+        if (strlen($keyword)) {
+            $data = Activity::where('title', 'like', "%$keyword%")->orwhere('description', 'like', "%$keyword%")->paginate(10);
+        } else {
+            $data = Activity::orderBy('created_at', 'asc')->paginate(10); 
+        }
+        return view('admin.activity.index')->with('data', $data);
+    }
+
+    public function storeActivity(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'image' => ['required', 'image'],
+            'title' => ['required', 'string'],
+            'description' => ['required', 'string']
+        ], [
+            'required' => 'Kolom :attribute harus diisi.'
+        ]);
+    
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $image_name = null;
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $image_extension = $image->extension();
+            $image_name = date('ymdhis').".".$image_extension;
+            $image->move(public_path('imageActivity'), $image_name);
+
+        } else {
+            $image_name = null;
+        }
+
+        Activity::create([
+            'image' => $image_name,
+            'title' => $request->title,
+            'description' => $request->description
+        ]);
+
+        return redirect()->route('admin.activity')->with('success', 'Berhasil create data!');
+    }
+
+    public function createActivity()
+    {
+        return view('admin.activity.create');
+    }
+
+    public function editActivity(string $id)
+    {
+        $data = Activity::where('id', $id)->first();
+        return view('admin.activity.edit')->with('data', $data);
+    }
+
+    public function updateActivity(Request $request, string $id) {
+        $validator = Validator::make($request->all(), [
+            'image' => ['image'],
+            'title' => ['required', 'string'],
+            'description' => ['required', 'string'],
+        ], [
+            'required' => 'Kolom :attribute harus diisi.'
+        ]);
+    
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $activity = Activity::where('id', $id)->first();
+        if (!$activity) {
+            return redirect()->back()->withErrors("Activity is not found")->withInput();
+        }
+
+        $data = [
+            'title' => $request->title,
+            'description' => $request->description
+        ];
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $image_extension = $image->extension();
+            $image_name = date('ymdhis').".".$image_extension;
+            $image->move(public_path('imageActivity'), $image_name);
+
+            File::delete(public_path('imageActivity').'/'.$activity->image);
+            $data['image'] = $image_name;
+        } else {
+            unset($data['image']);
+        }
+
+        Activity::where('id', $id)->update($data);
+        return redirect()->back()->with('success', 'Berhasil update data!');
+    }
+
+    public function destroyActivity(string $id)
+    {
+        $activity = Activity::where('id', $id)->first();
+
+        if (!$activity) {
+            return redirect()->back()->withErrors("Activity is not found")->withInput();
+        }
+
+        if ($activity->image) {
+            File::delete(public_path('imageActivity').'/'.$activity->image);
+        }
+        
+        Activity::where('id', $id)->delete();
+
+        return redirect()->back()->with('success', 'Berhasil delete data!');
+    }
+
     // ANGGOTA (USER)
-    public function listAnggota(Request $request) {
+    public function listAnggota(Request $request) 
+    {
         $keyword = $request->keyword;
 
         if (strlen($keyword)) {
@@ -205,7 +419,6 @@ class AdminController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'username' => ['required', 'string', 'max:255', 'unique:users'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'position' => ['required', 'string', 'max:255'],
             'phone' => ['required', 'string', 'max:15'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
@@ -219,7 +432,6 @@ class AdminController extends Controller
             'username' => $request->username,
             'email' => $request->email,
             'email_verified_at' => date('Y-m-d H:i:s'),
-            'position' => $request->position,
             'phone' => $request->phone,
             'password' => Hash::make($request->password)
         ]);
@@ -233,10 +445,10 @@ class AdminController extends Controller
         return view('admin.anggota.edit')->with('data', $data);
     }
 
-    public function updateAnggota(Request $request, string $id) {
+    public function updateAnggota(Request $request, string $id) 
+    {
         $validator = Validator::make($request->all(), [
             'name' => ['string', 'max:255'],
-            'position' => ['string', 'max:255'],
             'phone' => ['string', 'max:15'],
         ], [
             'required' => 'Kolom :attribute harus diisi.'
@@ -253,7 +465,6 @@ class AdminController extends Controller
 
         $data = [
             'name' => $request->name,
-            'position' => $request->position,
             'phone' => $request->phone,
         ];
 
@@ -296,7 +507,8 @@ class AdminController extends Controller
     }
 
     // ADMIN (USER)
-    public function listAdmin(Request $request) {
+    public function listAdmin(Request $request) 
+    {
         $keyword = $request->keyword;
 
         if (strlen($keyword)) {
@@ -325,7 +537,6 @@ class AdminController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'username' => ['required', 'string', 'max:255', 'unique:users'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'position' => ['required', 'string', 'max:255'],
             'phone' => ['required', 'string', 'max:15'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
@@ -339,7 +550,6 @@ class AdminController extends Controller
             'username' => $request->username,
             'email' => $request->email,
             'email_verified_at' => date('Y-m-d H:i:s'),
-            'position' => $request->position,
             'phone' => $request->phone,
             'password' => Hash::make($request->password),
             'role' => 'admin'
@@ -354,10 +564,10 @@ class AdminController extends Controller
         return view('admin.admin.edit')->with('data', $data);
     }
 
-    public function updateAdmin(Request $request, string $id) {
+    public function updateAdmin(Request $request, string $id) 
+    {
         $validator = Validator::make($request->all(), [
             'name' => ['string', 'max:255'],
-            'position' => ['string', 'max:255'],
             'phone' => ['string', 'max:15'],
         ], [
             'required' => 'Kolom :attribute harus diisi.'
@@ -374,7 +584,6 @@ class AdminController extends Controller
 
         $data = [
             'name' => $request->name,
-            'position' => $request->position,
             'phone' => $request->phone,
         ];
 

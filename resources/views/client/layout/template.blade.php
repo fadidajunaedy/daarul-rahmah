@@ -9,7 +9,7 @@
 </head>
 <body>
     @include('client.layout.navbar')
-    <main class="prose-lg">
+    <main class="prose-lg overflow-x-hidden">
         @yield('content')
     </main>
     @include('client.layout.footer')

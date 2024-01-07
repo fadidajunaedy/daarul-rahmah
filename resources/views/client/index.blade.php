@@ -1,17 +1,17 @@
 @extends('client.layout.template')
 @section('content')
 {{-- HERO --}}
-<section class="container mx-auto px-4 grid grid-cols-1 lg:grid-cols-2">
-    <div class="flex flex-col justify-center items-start">
+<section class="grid grid-cols-1 lg:grid-cols-2">
+    <div class="flex flex-col justify-center items-start px-4 lg:ml-[160px]">
         <h1>{{ $home->headline }}</h1>
         <p>{{ $home->body }}</p>
-        <button class="btn btn-lg btn-primary btn-cta rounded-full">Baca Selengkapnya</button>
+        <button class="btn btn-lg btn-primary btn-cta">Baca Selengkapnya</button>
     </div>
-    <figure class="order-first lg:order-last flex justify-center items-center">
+    <figure class="w-full h-full bg-blue-200 order-first lg:order-last flex justify-center items-center">
         <img 
         src="{{ asset('assets/images/'.$home->hero) }}" 
+        class="w-full h-full object-cover"
         alt="Hero Image"
-        class="hero-img rounded-lg"
         >
     </figure>
 </section>
@@ -47,31 +47,48 @@
 </section>
 {{-- HOW IT WORKS --}}
 
+{{-- KEGIATAN --}}
+<section class="container mx-auto px-4 flex flex-col justify-center items-center py-4">
+    <h2 class="text-center mt-4">Kegiatan</h2>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        @foreach ($activity as $a)
+        <div class="overflow-hidden">
+            <figure class="h-[280px] overflow-hidden rounded-lg shadow-xl">
+                <img src={{ asset('imageActivity/'.$a->image) }} class="object-cover object-center w-[100%] h-[100%]" alt="Shoes" />
+            </figure>
+            <div class="py-6">
+                <h3>{{ $a->title }}</h3>
+                <p>{{ $a->description }}</p>
+            </div>
+        </div>
+        @endforeach
+    </div>
+    <a href="{{ route('client.activity') }}" class="btn btn-primary btn-cta mt-4">Lihat lebih banyak</a>
+</section>
+
+
 {{-- NEWS --}}
 <section class="container mx-auto px-4 flex flex-col justify-center items-center py-4">
-    <p class="text-center">LIHAT BERITA</p>
     <h2 class="text-center mt-4">Berita Terikini</h2>
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
         @foreach ($news as $n)
         <a href="{{ url('news/'.$n->title) }}" class="card card-news bg-base-100 shadow-xl overflow-hidden">
             <figure class="h-[280px] overflow-hidden">
-                <img src={{ asset('imageNews/'.$n->image) }} class="object-cover w-[100%] h-[100%] hover:scale-125 transition-transform" alt="Shoes" />
+                <img src={{ asset('imageNews/'.$n->image) }} class="object-cover object-center w-[100%] h-[100%] hover:scale-125 transition-transform" alt="Shoes" />
             </figure>
             <div class="card-body border-b-2">
                 {{-- <span class="link">- Category</span> --}}
-                <h2 class="card-title">
+                <h3 class="card-title">
                     {{ $n->title }}
-                </h2>
+                </h3>
                 <p>{{ substr(strip_tags($n->content), 0, 100) . '...' }}</p>
             </div>
             <div class="text-sm px-8 py-4 flex justify-between items-center">
-                {{ \Carbon\Carbon::parse($n->created_at)->diffForHumans() }}
+                {{ \Carbon\Carbon::parse($n->created_at)->format('d F Y') }}
             </div>
         </a>
         @endforeach
     </div>
-    <a href="{{ route('client.news') }}" class="btn btn-lg btn-primary btn-cta rounded-full mt-4">Baca lebih banyak</a>
-    
+    <a href="{{ route('client.news') }}" class="btn btn-primary btn-cta mt-4">Baca lebih banyak</a>
 </section>
-{{-- NEWS --}}
 @endsection

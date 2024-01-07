@@ -2,7 +2,7 @@
   <label for="drawer-toggle" class="drawer-overlay"></label> 
   <ul class="menu w-80 min-h-full bg-base-100 text-base-content shadow-lg p-0 my-0 ml-0">
         <li class="w-full my-0 h-[9vh] flex justify-center items-start">
-            <h2 class="text-2xl font-bold w-full py-4 rounded-none my-0">Daarul Rahmah</h2>
+            <a href="{{ url('/') }}" class="dashboard-logo text-2xl font-bold w-full py-4 rounded-none my-0">Daarul Rahmah</a>
         </li>
         {{-- <div class="divider my-1"></div> --}}
         <li class="w-full my-0">
@@ -16,6 +16,7 @@
                 Dashboard
             </a>
         </li>
+        @if ((auth()->user()->role == 'admin') || (auth()->user()->role == 'super-admin'))
         <li class="w-full my-0">
             <a class="py-4 rounded-none {{ Route::is('admin.donate*') ? 'active' : '' }} {{ Route::is('admin.cash*') ? 'active' : '' }}" >
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people" viewBox="0 0 16 16">
@@ -35,6 +36,7 @@
                         Anggota
                     </a>
                 </li>
+                @if (auth()->user()->role == 'super-admin')
                 <li class="my-0">
                     <a href="{{ route('admin.list') }}" class="py-4 rounded-none {{ Route::is(['admin.list', 'admin.create']) ? 'active' : '' }}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-person-gear" viewBox="0 0 16 16">
@@ -44,6 +46,7 @@
                         Admin
                     </a>
                 </li>
+                @endif
             </ul>
         </li>
         <li class="w-full my-0">
@@ -83,8 +86,28 @@
                         About
                     </a>
                 </li>
+                <li class="my-0">
+                    <a href="{{ route('admin.contact.edit') }}" class="py-4 rounded-none {{ Route::is('admin.contact*') ? 'active' : '' }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-person-lines-fill" viewBox="0 0 16 16">
+                            <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5m.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1z"/>
+                        </svg>
+                        &nbsp;
+                        Kontak
+                    </a>
+                </li>
+                <li class="my-0">
+                    <a href="{{ route('admin.activity') }}" class="py-4 rounded-none {{ Route::is('admin.activity*') ? 'active' : '' }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-images" viewBox="0 0 16 16">
+                            <path d="M4.502 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"/>
+                            <path d="M14.002 13a2 2 0 0 1-2 2h-10a2 2 0 0 1-2-2V5A2 2 0 0 1 2 3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-1.998 2M14 2H4a1 1 0 0 0-1 1h9.002a2 2 0 0 1 2 2v7A1 1 0 0 0 15 11V3a1 1 0 0 0-1-1M2.002 4a1 1 0 0 0-1 1v8l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71a.5.5 0 0 1 .577-.094l1.777 1.947V5a1 1 0 0 0-1-1z"/>
+                          </svg>
+                        &nbsp;
+                        Kegiatan
+                    </a>
+                </li>
             </ul>
         </li>
+        @endif
         <li class="w-full my-0">
             <a class="py-4 rounded-none {{ Route::is('admin.donate*') ? 'active' : '' }} {{ Route::is('admin.cash*') ? 'active' : '' }}" >
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-wallet2" viewBox="0 0 16 16">
@@ -115,7 +138,7 @@
                 </li>
             </ul>
         </li>
-        <li class="w-full mt-auto">
+        {{-- <li class="w-full mt-auto">
             <a href="{{ url('/')}}" class="py-4 rounded-none">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-up-right" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5"/>
@@ -124,6 +147,6 @@
                 &nbsp;
                 Halaman Utama
             </a>
-        </li>    
+        </li>     --}}
     </ul>
 </div>

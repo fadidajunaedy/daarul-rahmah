@@ -27,12 +27,6 @@
         </label>
         <label class="form-control w-full">
             <div class="label">
-              <span class="label-text font-semibold">Jabatan</span>
-            </div>
-            <input type="text" name="position" class="input input-lg input-bordered w-full"  value="{{ old('position') }}"/>
-        </label>
-        <label class="form-control w-full">
-            <div class="label">
               <span class="label-text font-semibold">Telepon</span>
             </div>
             <input type="number" name="phone" class="input input-lg input-bordered w-full"  value="{{ old('phone') }}"/>
@@ -65,7 +59,7 @@
                 </button>
             </div>
         </label>
-        <button type="submit" class="btn btn-lg btn-cta btn-primary rounded-full">Register</button>
+        <button type="submit" class="btn btn-lg btn-cta btn-primary">Register</button>
         <span class="text-center">Sudah punya akun?&nbsp;<a href={{ route("login") }} class="link">Login</a></span>
     </form>
 </div>

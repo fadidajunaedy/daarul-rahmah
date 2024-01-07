@@ -35,8 +35,7 @@
                         <th>Nama</th>
                         <th>Username</th>
                         <th>Email</th>
-                        <th>Phone</th>
-                        <th>Position</th>
+                        <th>Telepon</th>
                         <th>Created At</th>
                         <th class="text-center">Aksi</th>
                     </tr>
@@ -53,7 +52,6 @@
                         <td>{{ $item->username }}</td>
                         <td>{{ $item->email }}</td>
                         <td>{{ $item->phone }}</td>
-                        <td>{{ $item->position }}</td>
                         <td>{{ \Carbon\Carbon::parse($item->created_at)->diffForHumans() }}</td>
                         <td>
                             <div class="flex justify-center items-center gap-2">

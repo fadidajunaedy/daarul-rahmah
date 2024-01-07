@@ -20,6 +20,6 @@ class IsLogin
             return $next($request);
         }
     
-        return redirect()->back();
+        return redirect()->route('login')->with('warning', 'Login terlebih dahulu');
     }
 }

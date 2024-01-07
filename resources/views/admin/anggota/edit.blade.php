@@ -40,17 +40,10 @@
             </div>
             <div class="col-span-2 lg:col-span-1 form-control w-full">
                 <label class="label">
-                  <span class="label-text font-semibold">Jabatan</span>
-                </label>
-                <input type="text" name="position" class="input input-lg input-bordered" value="{{ $data->position }}" />
-            </div>
-            <div class="col-span-2 lg:col-span-1 form-control w-full">
-                <label class="label">
                   <span class="label-text font-semibold">Telepon</span>
                 </label>
                 <input type="number" name="phone" class="input input-lg input-bordered" value="{{ $data->phone }}" />
             </div>
-            <div></div>
             <div class="col-span-2 flex justify-end gap-2">
                 <button type="submit" class="btn btn-lg btn-cta btn-primary">Save Changes</button>
             </div>
