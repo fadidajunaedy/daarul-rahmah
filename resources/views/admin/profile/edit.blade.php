@@ -93,7 +93,7 @@
                             </svg>
                         </button>
                     </div>
-                    <div class="flex justify-end gap-2">
+                    <div class="flex justify-end gap-2 mt-4">
                         <button type="reset" class="btn btn-lg btn-secondary btn-cta">Reset</button>
                         <button type="submit" class="btn btn-lg btn-primary btn-cta">Save Changes</button>
                     </div>
