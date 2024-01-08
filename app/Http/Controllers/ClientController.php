@@ -20,32 +20,37 @@ class ClientController extends Controller
         $home = Home::where('id', 1)->first();
         $activity = Activity::orderBy('created_at', 'asc')->take(3)->get();
         $news = News::orderBy('created_at', 'asc')->take(3)->get();
-        return view('client.index', compact('home', 'activity', 'news'));
+        $contact = Contact::where('id', 1)->first();
+        return view('client.index', compact('home', 'activity', 'news', 'contact'));
     }
 
     public function news()
     {
         $news = News::orderBy('created_at', 'desc')->paginate(9);
-        return view('client.news')->with('news', $news);
+        $contact = Contact::where('id', 1)->first();
+        return view('client.news', compact('news', 'contact'));
     }
 
     public function newsDetail(string $title)
     {
         $data = News::where('title', $title)->first();
-        return view('client.news-detail')->with('data', $data);
+        $contact = Contact::where('id', 1)->first();
+        return view('client.news-detail', compact('data', 'contact'));
     }
 
     public function about()
     {
         $about = About::where('id', 1)->first();
         $mision = Mision::where('about_id', 1)->get();
-        return view('client.about', compact('about', 'mision'));
+        $contact = Contact::where('id', 1)->first();
+        return view('client.about', compact('about', 'mision', 'contact'));
     }
 
     public function activity()
     {
         $activity = Activity::orderBy('created_at', 'desc')->paginate(9);
-        return view('client.activity')->with('activity', $activity);
+        $contact = Contact::where('id', 1)->first();
+        return view('client.activity', compact('activity', 'contact'));
     }
 
     public function contact()
@@ -53,52 +58,5 @@ class ClientController extends Controller
         $contact = Contact::where('id', 1)->first();
         return view('client.contact')->with('contact', $contact);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
+    
 }

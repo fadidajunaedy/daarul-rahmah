@@ -1,5 +1,5 @@
 @extends('admin.layout.template')
-@section('title', "Daarul Rahmah")
+@section('title', "Daarul Rahmah - Dashboard")
 @section('content')
 <section class="min-h-screen">
   <h2 class="">Hello {{auth()->user()->name }}, <br> Selamat datang di dashboard Surat Digital: 005/014</h2>

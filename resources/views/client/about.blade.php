@@ -1,4 +1,5 @@
 @extends('client.layout.template')
+@section('title', "Daarul Rahmah - About")
 @section('content')
 <div class="flex flex-col justify-center items-center bg-slate-500 text-base-200 min-h-[60vh] shadow-xl">
     <h1 class="text-center text-base-100">Tentang Kami</h1>
@@ -33,7 +34,7 @@
         @endphp
         @foreach($mision as $m)
         <div class="flex flex-col items-start p-4">
-            <span class="w-[50px] h-[50px] bg-slate-500 text-white font-bold rounded-full flex justify-center items-center mb-4">
+            <span class="w-[50px] h-[50px] bg-[#5E81AC] text-white font-bold rounded-full flex justify-center items-center mb-4">
                {{ $i }}
             </span>
             <h3>{{ $m->title }}</h3>

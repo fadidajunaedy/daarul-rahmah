@@ -1,5 +1,5 @@
 @extends('auth.template')
-@section('title', 'Lupa Password')
+@section('title', 'Daarul Rahmah - Forgot Password')
 @section('content')
 <div class="p-6 bg-base-100 max-w-lg rounded-lg shadow-xl overflow-hidden">
     <h2>Lupa Password ?</h2>

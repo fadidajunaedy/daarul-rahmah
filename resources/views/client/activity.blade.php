@@ -1,10 +1,10 @@
 @extends('client.layout.template')
+@section('title', "Daarul Rahmah - Activity")
 @section('content')
 <div class="flex flex-col justify-center items-center bg-slate-500 min-h-[60vh] shadow-xl px-4 py-6">
     <h1 class="text-center text-base-100">Kegiatan Daarul Rahmah</h1>
 </div>
 <section class="container mx-auto px-4 flex flex-col justify-center items-center py-4">
-    <h2 class="text-center mt-4">Kegiatan</h2>
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
         @foreach ($activity as $a)
         <div class="overflow-hidden">

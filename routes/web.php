@@ -32,7 +32,7 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('/auth/login', 'login')->name('login.user')->middleware('isGuest');
     Route::get('/auth/forgot-password', 'forgotPassword')->name('password.request')->middleware('isGuest');
     Route::post('/auth/forgot-password', 'requestResetPassword')->name('password.email')->middleware('isGuest');
-    Route::get('auth/reset-password/{token}', function (string $token) {
+    Route::get('auth/reset-password/{token}', function (Request $request, string $token) {
         $email = $request->query('email');
         return view('auth.reset-password', ['token' => $token, 'email' => $email]);
     })->name('password.reset')->middleware('isGuest');

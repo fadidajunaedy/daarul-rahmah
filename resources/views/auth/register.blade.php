@@ -1,5 +1,5 @@
 @extends('auth.template')
-@section('title', "Register")
+@section('title', "Daarul Rahmah - Register")
 @section('content')
 <div class="p-6 bg-base-100 max-w-lg rounded-lg shadow-xl overflow-hidden">
     <h2>Register</h2>

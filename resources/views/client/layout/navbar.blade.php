@@ -36,6 +36,8 @@
 </div>
 <script>
     document.addEventListener("DOMContentLoaded", function(){
+        const arrayClass = ["bg-base-200"]
+        // bg-base-200 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-40
         document.getElementById('navbar').classList.remove('fixed');
         document.getElementById('navbar').classList.add('absolute');
         document.getElementById('navbar').classList.remove('bg-base-100');
@@ -45,7 +47,7 @@
         document.getElementById('navbar').classList.add('text-white');
 
         document.querySelector(".active").classList.add('font-bold');
-        document.querySelector(".active").classList.add('bg-none');
+        document.querySelector(".active").classList.add('active-link');
 
     window.addEventListener('scroll', function() {
         if (window.scrollY > 50) {
@@ -56,7 +58,7 @@
             document.getElementById('navbar').classList.remove('py-4');
 
             document.getElementById('navbar').classList.remove('text-white');
-            document.querySelector(".active").classList.add('text-primary');
+            document.querySelector(".active").classList.add('text-blue-200');
             
             // add padding top to show content behind navbar
             navbar_height = document.querySelector('.navbar').offsetHeight;
@@ -69,7 +71,6 @@
             document.getElementById('navbar').classList.add('py-4');
 
             document.getElementById('navbar').classList.add('text-white');
-            document.querySelector(".active").classList.remove('text-primary');
             // remove padding top from body
             document.body.style.paddingTop = '0';
         } 

@@ -1,5 +1,5 @@
 @extends('auth.template')
-@section('title', 'Konfirmasi Email')
+@section('title', 'Daarul Rahmah - Confirmation Email')
 @section('content')
 <div class="flex flex-col justify-center items-center">
     @if (session('verified'))

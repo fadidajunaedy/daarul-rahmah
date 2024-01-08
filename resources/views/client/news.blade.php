@@ -1,4 +1,5 @@
 @extends('client.layout.template')
+@section('title', "Daarul Rahmah - News")
 @section('content')
 <div class="flex flex-col justify-center items-center bg-slate-500 min-h-[60vh] shadow-xl px-4 py-6">
     <h1 class="text-center text-base-100">Daarul Rahmah Dalam Berita</h1>

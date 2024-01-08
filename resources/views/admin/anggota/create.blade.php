@@ -1,5 +1,5 @@
 @extends('admin.layout.template')
-@section('title', "Daarul Rahmah")
+@section('title', "Daarul Rahmah - Create Anggota")
 @section('content')
 <section class="min-h-[90vh] w-full">
     <div class="breadcrumbs px-0 ">

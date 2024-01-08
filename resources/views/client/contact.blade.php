@@ -1,4 +1,5 @@
 @extends('client.layout.template')
+@section('title', "Daarul Rahmah - Contact")
 @section('content')
 <div class="flex flex-col justify-center items-center bg-slate-500 text-base-200 min-h-[60vh] shadow-xl">
     <h1 class="text-center text-base-100">Kontak</h1>

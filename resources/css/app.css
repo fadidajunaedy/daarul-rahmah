@@ -64,8 +64,14 @@ section {
     box-shadow: 0 0;
 }
 
-.bg-none {
+.active-link {
+    color: #4000EB !important;
     background-color: unset !important;
+}
+
+.btn-primary,
+.btn-secondary {
+    color: #ECEFF4 !important;
 }
 
 .btn-cta:hover {
@@ -74,7 +80,7 @@ section {
 
 @media (min-width: 1200px) {
     .hero-img {
-        box-shadow: 36px 36px lightblue;
+        box-shadow: 36px 36px #5E81AC;
     }
 }
 
@@ -82,7 +88,7 @@ section {
     background-color: unset !important;
     color: unset !important;
     font-weight: bold;
-    border-left: 4px solid #3F00E7 !important;
+    border-left: 4px solid #5E81AC !important;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
@@ -129,10 +135,11 @@ section {
 }
 
 .navbar a.active {
-    color: #ADD8E6 !important;
+    color: #5E95EF !important;
 }
 
-.navbar a:hover {
-    color: #ADD8E6 !important;
+.navbar a:hover,
+nav a:hover {
+    color: #5E95EF !important;
     background-color: unset !important;
 }

@@ -1,4 +1,5 @@
 @extends('client.layout.template')
+@section('title', "Daarul Rahmah - Detail News")
 @section('content')
 {{-- MISSION --}}
 

@@ -34,12 +34,7 @@
     <form action="{{ route('password.update') }}" method="POST" class="flex flex-col gap-4">
         @csrf
         <input type="hidden" name="token" value="{{ $token }}">
-        <label class="form-control w-full">
-            <div class="label">
-              <span class="label-text font-semibold">Email</span>
-            </div>
-            <input type="email" name="email" class="input input-lg input-bordered w-full"/>
-        </label>
+        <input type="hidden" name="email" value="{{ $email }}">
         <label class="form-control w-full">
             <div class="label">
                 <span class="label-text font-semibold">Password</span>

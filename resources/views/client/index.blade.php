@@ -1,4 +1,5 @@
 @extends('client.layout.template')
+@section('title', "Daarul Rahmah")
 @section('content')
 {{-- HERO --}}
 <section class="grid grid-cols-1 lg:grid-cols-2">
