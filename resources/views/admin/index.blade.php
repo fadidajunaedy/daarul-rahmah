@@ -4,6 +4,7 @@
 <section class="min-h-screen">
   <h2 class="">Hello {{auth()->user()->name }}, <br> Selamat datang di dashboard Surat Digital: 005/014</h2>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    @if ((auth()->user()->role == "admin") || (auth()->user()->role == "super-admin"))     
     <div class="stats shadow">
         <div class="stat">
             <div class="stat-figure text-primary">
@@ -27,6 +28,8 @@
             <div class="text-2xl font-bold">{{ $totalAdmin }}</div>
         </div>
     </div>
+    @endif
+
     <div class="stats shadow">
         <div class="stat">
             <div class="stat-figure text-yellow-500">

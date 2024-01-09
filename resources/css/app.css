@@ -143,3 +143,13 @@ nav a:hover {
     color: #5E95EF !important;
     background-color: unset !important;
 }
+
+.modal-box {
+    background-color: unset !important;
+    box-shadow: none !important;
+}
+
+.modal-box img {
+    object-fit: contain !important;
+    object-position: center !important;
+}

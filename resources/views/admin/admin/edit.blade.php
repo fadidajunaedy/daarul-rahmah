@@ -12,11 +12,11 @@
     </div>
     <h2 class="font-semibold my-4 mb-4">Edit Admin</h2>
     @include('components.alert')
-    <div class="overflow-x-auto bg-base-100 p-4 rounded-xl shadow-xl">
+    <div class="grid grid-cols-3 gap-4">
         <form 
         action="{{ url('admin/' . $data->id . '/update') }}" 
         method="POST"
-        class=" grid grid-cols-2 gap-4"
+        class="col-span-3 lg:col-span-2 bg-base-100 rounded-xl shadow-xl p-4 flex flex-col gap-4"
         >
             @csrf
             @method('PATCH')
@@ -44,10 +44,30 @@
                 </label>
                 <input type="number" name="phone" class="input input-lg input-bordered" value="{{ $data->phone }}" />
             </div>
+            <div class="col-span-2 lg:col-span-1 form-control w-full">
+              <label class="label">
+                <span class="label-text font-semibold">Status<span class="text-red-400">*</span></span>
+              </label>
+              <select name="status" class="select select-lg select-bordered">
+                  <option selected disabled>Pilih Status</option>
+                  <option value="active" {{ $data->status == 'active' ? 'selected' : '' }}>Aktif</option>
+                  <option value="non-active" {{ $data->status == 'non-active' ? 'selected' : '' }}>Non Aktif</option>
+              </select>
+          </div>
             <div class="col-span-2 flex justify-end gap-2">
                 <button type="submit" class="btn btn-lg btn-cta btn-primary">Save Changes</button>
             </div>
         </form>
+        <div class="col-span-3 lg:col-span-1 bg-base-100 p-6 rounded-xl shadow-xl flex flex-col gap-2 h-[280px]">
+          <div>
+              <span class="font-semibold">Created At</span>
+              <p>{{ $data->created_at->diffForHumans() }}</p>
+          </div>
+          <div>
+              <span class="font-semibold">Updated At</span>
+              <p>{{ $data->updated_at->diffForHumans() }}</p>
+          </div>
+      </div>
     </div>
 </section>
 @endsection

@@ -63,12 +63,19 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
-
-            return redirect()->intended('admin/');
+    
+            if ($user->status == 'active') {
+                return redirect()->intended('admin/')->with('success', 'Login Berhasil');
+            } else {
+                Auth::logout();
+                return back()->with([
+                    'warning' => 'Akun Anda tidak aktif atau belum diaktifkan. Silakan hubungi administrator.',
+                ]);
+            }
         }
 
         return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
+            'email' => 'Email atau Password salah',
         ]);
     }
 
@@ -139,6 +146,6 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect()->route('login')->with('success', 'Logout Successfully');
+        return redirect()->route('login')->with('success', 'Logout Berhasil');
     }
 }

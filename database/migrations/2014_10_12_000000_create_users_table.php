@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('phone');
             $table->enum('role', ['anggota', 'admin', 'super-admin'])->default('anggota');
+            $table->enum('status', ['active', 'non-active'])->default('non-active');
             $table->rememberToken();
             $table->timestamps();
         });

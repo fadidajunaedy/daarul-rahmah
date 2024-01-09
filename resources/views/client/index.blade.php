@@ -6,7 +6,7 @@
     <div class="flex flex-col justify-center items-start px-4 lg:ml-[160px]">
         <h1>{{ $home->headline }}</h1>
         <p>{{ $home->body }}</p>
-        <button class="btn btn-lg btn-primary btn-cta">Baca Selengkapnya</button>
+        <a href="{{ route('client.about') }}" class="btn btn-lg btn-primary btn-cta">Baca Selengkapnya</a>
     </div>
     <figure class="w-full h-full bg-blue-200 order-first lg:order-last flex justify-center items-center">
         <img 
@@ -18,8 +18,36 @@
 </section>
 {{-- HERO --}}
 
+<div class="flex flex-col justify-center items-center bg-slate-500 text-base-200 min-h-[60vh] shadow-xl px-4 py-6">
+    <h2 class="text-center break-all text-base-100">Visi</h2>
+    <q class="text-center max-w-2xl">
+        {!! $about->vision !!}
+    </q>
+</div>
+{{-- MISSION --}}
+<section class="container mx-auto px-4 flex flex-col justify-center items-center px-4 py-6">
+    <h2 class="text-center mt-4">Misi</h2>
+    <div class="grid grid-cols-1 lg:grid-cols-2">
+        @php
+            $i = 1;
+        @endphp
+        @foreach($mision as $m)
+        <div class="flex flex-col items-start p-4">
+            <span class="w-[50px] h-[50px] bg-[#5E81AC] text-white font-bold rounded-full flex justify-center items-center mb-4">
+               {{ $i }}
+            </span>
+            <h3>{{ $m->title }}</h3>
+            <p>{{ $m->description }}</p>
+        </div>
+        @php
+            $i++
+        @endphp
+        @endforeach
+    </div>
+</section>
+
 {{-- HOW IT WORKS --}}
-<section class="container mx-auto px-4 grid grid-cols-1 lg:grid-cols-2">
+{{-- <section class="container mx-auto px-4 grid grid-cols-1 lg:grid-cols-2">
     <figure class="flex justify-center items-center">
         <img 
         src="{{ asset('assets/img/photos/about7.jpeg') }}" 
@@ -45,7 +73,7 @@
             </li>
         </ol>
     </div>
-</section>
+</section> --}}
 {{-- HOW IT WORKS --}}
 
 {{-- KEGIATAN --}}
@@ -54,13 +82,24 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
         @foreach ($activity as $a)
         <div class="overflow-hidden">
-            <figure class="h-[280px] overflow-hidden rounded-lg shadow-xl">
-                <img src={{ asset('imageActivity/'.$a->image) }} class="object-cover object-center w-[100%] h-[100%]" alt="Shoes" />
-            </figure>
+            <button type="button" onclick="modalDetailImage{{ $a->id }}.showModal()" class="h-[280px] w-[100%] overflow-hidden rounded-lg shadow-xl cursor-pointer">
+                <img src={{ asset('imageActivity/'.$a->image) }} class="object-cover object-center w-[100%] h-[100%] hover:scale-125 transition-transform" alt="Shoes" />
+            </button>
             <div class="py-6">
                 <h3>{{ $a->title }}</h3>
                 <p>{{ $a->description }}</p>
             </div>
+            <dialog id="modalDetailImage{{ $a->id }}" class="modal bg-base-200 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-10">
+                <form method="dialog" class="absolute right-6 top-6 z-99">
+                    <button class="btn btn-sm btn-circle btn-ghost bg-slate-500 text-white font-bold">✕</button>
+                </form>
+                <div class="modal-box h-[90vh] p-0 max-w-5xl overflow-hidden rounded">
+                    <img src={{ asset('imageActivity/'.$a->image) }} class="object-contain object-center w-[100%] h-[100%]"/>
+                </div>
+                <form method="dialog" class="modal-backdrop">
+                    <button>close</button>
+                  </form>
+            </dialog>
         </div>
         @endforeach
     </div>

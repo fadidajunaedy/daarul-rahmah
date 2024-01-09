@@ -42,6 +42,17 @@
                 </label>
                 <input type="number" name="phone" class="input input-lg input-bordered" value="{{ old('phone') }}" />
             </div>
+            <div class="col-span-2 lg:col-span-1 form-control w-full">
+                <label class="label">
+                  <span class="label-text font-semibold">Status<span class="text-red-400">*</span></span>
+                </label>
+                <select name="status" class="select select-lg select-bordered">
+                    <option selected disabled>Pilih Status</option>
+                    <option value="active" {{ old('status') == 'active' ? 'selected' : '' }}>Aktif</option>
+                    <option value="non-active" {{ old('status') == 'non-active' ? 'selected' : '' }}>Non Aktif</option>
+                </select>
+            </div>
+            <div></div>
             <label class="col-span-2 lg:col-span-1 form-control w-full">
                 <div class="label">
                     <span class="label-text font-semibold">Password</span>

@@ -52,7 +52,7 @@ class AdminController extends Controller
 
         $user = User::where('id', auth()->user()->id)->first();
         if (!$user) {
-            return redirect()->back()->withErrors("User is not found")->withInput();
+            return redirect()->back()->withErrors("User tidak ditemukan")->withInput();
         }
 
         $data = [
@@ -96,7 +96,7 @@ class AdminController extends Controller
         $validator = Validator::make($request->all(), [
             'headline' => ['required', 'string'],
             'body' => ['required', 'string'],
-            'hero' => ['image']
+            'hero' => ['mimes:jpeg,jpg,png', 'max:10000']
         ], [
             'required' => 'Kolom :attribute harus diisi.'
         ]);
@@ -107,7 +107,7 @@ class AdminController extends Controller
 
         $home = Home::where('id', 1)->first();
         if (!$home) {
-            return redirect()->back()->withErrors("Home is not found")->withInput();
+            return redirect()->back()->withErrors("Home tidak ditemukan")->withInput();
         }
 
         $data = [
@@ -153,7 +153,7 @@ class AdminController extends Controller
 
         $about = About::where('id', 1)->first();
         if (!$about) {
-            return redirect()->back()->withErrors("About is not found")->withInput();
+            return redirect()->back()->withErrors("About tidak ditemukan")->withInput();
         }
 
         $data = [
@@ -211,7 +211,7 @@ class AdminController extends Controller
 
         $mision = Mision::where('id', $id)->first();
         if (!$mision) {
-            return redirect()->back()->withErrors("Mision is not found")->withInput();
+            return redirect()->back()->withErrors("Mision tidak ditemukan")->withInput();
         }
 
         $data = [
@@ -228,7 +228,7 @@ class AdminController extends Controller
         $mision = Mision::where('id', $id)->first();
 
         if (!$mision) {
-            return redirect()->back()->withErrors("Mision is not found")->withInput();
+            return redirect()->back()->withErrors("Mision tidak ditemukan")->withInput();
         }
 
         Mision::where('id', $id)->delete();
@@ -260,7 +260,7 @@ class AdminController extends Controller
 
         $contact = Contact::where('id', 1)->first();
         if (!$contact) {
-            return redirect()->back()->withErrors("Contact is not found")->withInput();
+            return redirect()->back()->withErrors("Contact tidak ditemukan")->withInput();
         }
 
         $data = [
@@ -347,7 +347,7 @@ class AdminController extends Controller
 
         $activity = Activity::where('id', $id)->first();
         if (!$activity) {
-            return redirect()->back()->withErrors("Activity is not found")->withInput();
+            return redirect()->back()->withErrors("Kegiatan tidak ditemukan")->withInput();
         }
 
         $data = [
@@ -376,7 +376,7 @@ class AdminController extends Controller
         $activity = Activity::where('id', $id)->first();
 
         if (!$activity) {
-            return redirect()->back()->withErrors("Activity is not found")->withInput();
+            return redirect()->back()->withErrors("Kegiatan tidak ditemukan")->withInput();
         }
 
         if ($activity->image) {
@@ -420,6 +420,7 @@ class AdminController extends Controller
             'username' => ['required', 'string', 'max:255', 'unique:users'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'phone' => ['required', 'string', 'max:15'],
+            'status' => ['required', 'string'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
 
@@ -433,6 +434,7 @@ class AdminController extends Controller
             'email' => $request->email,
             'email_verified_at' => date('Y-m-d H:i:s'),
             'phone' => $request->phone,
+            'status' => $request->status,
             'password' => Hash::make($request->password)
         ]);
 
@@ -450,6 +452,7 @@ class AdminController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => ['string', 'max:255'],
             'phone' => ['string', 'max:15'],
+            'status' => ['string'],
         ], [
             'required' => 'Kolom :attribute harus diisi.'
         ]);
@@ -460,12 +463,13 @@ class AdminController extends Controller
 
         $anggota = User::where('id', $id)->first();
         if (!$anggota) {
-            return redirect()->back()->withErrors("Anggota is not found")->withInput();
+            return redirect()->back()->withErrors("Anggota tidak ditemukan")->withInput();
         }
 
         $data = [
             'name' => $request->name,
             'phone' => $request->phone,
+            'status' => $request->status,
         ];
 
         User::where('id', $id)->update($data);
@@ -477,7 +481,7 @@ class AdminController extends Controller
         $user = User::where('id', $id)->first();
 
         if (!$user) {
-            return redirect()->back()->withErrors("User is not found")->withInput();
+            return redirect()->back()->withErrors("User tidak ditemukan")->withInput();
         }
 
         User::where('id', $id)->delete();
@@ -538,6 +542,7 @@ class AdminController extends Controller
             'username' => ['required', 'string', 'max:255', 'unique:users'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'phone' => ['required', 'string', 'max:15'],
+            'status' => ['required', 'string'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
 
@@ -552,6 +557,7 @@ class AdminController extends Controller
             'email_verified_at' => date('Y-m-d H:i:s'),
             'phone' => $request->phone,
             'password' => Hash::make($request->password),
+            'status' => $request->status,
             'role' => 'admin'
         ]);
 
@@ -569,6 +575,7 @@ class AdminController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => ['string', 'max:255'],
             'phone' => ['string', 'max:15'],
+            'status' => ['string'],
         ], [
             'required' => 'Kolom :attribute harus diisi.'
         ]);
@@ -579,12 +586,13 @@ class AdminController extends Controller
 
         $anggota = User::where('id', $id)->first();
         if (!$anggota) {
-            return redirect()->back()->withErrors("Anggota is not found")->withInput();
+            return redirect()->back()->withErrors("Anggota tidak ditemukan")->withInput();
         }
 
         $data = [
             'name' => $request->name,
             'phone' => $request->phone,
+            'status' => $request->status,
         ];
 
         User::where('id', $id)->update($data);
@@ -596,7 +604,7 @@ class AdminController extends Controller
         $user = User::where('id', $id)->first();
 
         if (!$user) {
-            return redirect()->back()->withErrors("User is not found")->withInput();
+            return redirect()->back()->withErrors("User tidak ditemukan")->withInput();
         }
 
         User::where('id', $id)->delete();
@@ -646,7 +654,7 @@ class AdminController extends Controller
     public function storeNews(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'image' => ['required', 'image'],
+            'image' => ['required', 'mimes:jpeg,jpg,png', 'max:10000'],
             'title' => ['required', 'string'],
             'date' => ['required', 'string'],
             'content' => ['required', 'string'],
@@ -688,7 +696,7 @@ class AdminController extends Controller
 
     public function updateNews(Request $request, string $id) {
         $validator = Validator::make($request->all(), [
-            'image' => ['image'],
+            'image' => ['required', 'mimes:jpeg,jpg,png', 'max:10000'],
             'title' => ['required', 'string'],
             'date' => ['required', 'string'],
             'content' => ['required', 'string'],
@@ -702,7 +710,7 @@ class AdminController extends Controller
 
         $news = News::where('id', $id)->first();
         if (!$news) {
-            return redirect()->back()->withErrors("News is not found")->withInput();
+            return redirect()->back()->withErrors("News tidak ditemukan")->withInput();
         }
 
         $data = [
@@ -732,7 +740,7 @@ class AdminController extends Controller
         $news = News::where('id', $id)->first();
 
         if (!$news) {
-            return redirect()->back()->withErrors("News is not found")->withInput();
+            return redirect()->back()->withErrors("News tidak ditemukan")->withInput();
         }
 
         if ($news->image) {
@@ -833,7 +841,7 @@ class AdminController extends Controller
 
         $donate = Donate::where('id', $id)->first();
         if (!$donate) {
-            return redirect()->back()->withErrors("Donate is not found")->withInput();
+            return redirect()->back()->withErrors("Donate tidak ditemukan")->withInput();
         }
 
         $amount = str_replace('.', '', trim($request->amount));
@@ -852,7 +860,7 @@ class AdminController extends Controller
         $donate = Donate::where('id', $id)->first();
 
         if (!$donate) {
-            return redirect()->back()->withErrors("Donate is not found")->withInput();
+            return redirect()->back()->withErrors("Donate tidak ditemukan")->withInput();
         }
 
         Donate::where('id', $id)->delete();
@@ -949,7 +957,7 @@ class AdminController extends Controller
 
         $cash = Cash::where('id', $id)->first();
         if (!$cash) {
-            return redirect()->back()->withErrors("Cash is not found")->withInput();
+            return redirect()->back()->withErrors("Cash tidak ditemukan")->withInput();
         }
 
         $amount = str_replace('.', '', trim($request->amount));
@@ -968,7 +976,7 @@ class AdminController extends Controller
         $cash = Cash::where('id', $id)->first();
 
         if (!$cash) {
-            return redirect()->back()->withErrors("Cash is not found")->withInput();
+            return redirect()->back()->withErrors("Cash tidak ditemukan")->withInput();
         }
 
         Cash::where('id', $id)->delete();
@@ -996,7 +1004,5 @@ class AdminController extends Controller
 
         return Response::make('', 200, $headers);
     }
-
-
 
 }

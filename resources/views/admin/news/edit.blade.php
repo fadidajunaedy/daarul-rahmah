@@ -23,8 +23,9 @@
             <div class="col-span-2 form-control w-full">
                 <label class="label">
                   <span class="label-text font-semibold">Image ({{ $data->image }})</span>
+                  <span class="label-text-alt">Maksimal ukuran gambar adalah 10 MB</span>
                 </label>
-                <input id="input_image" name="image" type="file" class="file-input file-input-lg file-input-bordered w-full" />
+                <input id="input_image" name="image" type="file" class="file-input file-input-lg file-input-bordered w-full" accept="image/*" />
             </div>
             <div class="col-span-2 form-control">
                 <label class="label">

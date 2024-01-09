@@ -36,6 +36,7 @@
                         <th>Username</th>
                         <th>Email</th>
                         <th>Telepon</th>
+                        <th class="text-center">Status</th>
                         <th>Created At</th>
                         <th class="text-center">Aksi</th>
                     </tr>
@@ -52,6 +53,14 @@
                         <td>{{ $item->username }}</td>
                         <td>{{ $item->email }}</td>
                         <td>{{ $item->phone }}</td>
+                        <td>{{ $item->phone }}</td>
+                        <td class="text-center">
+                            @if ($item->status == 'active')
+                            <div class="badge badge-lg bg-success text-white badge-outline py-4 px-4">Aktif</div>
+                            @else
+                            <div class="badge badge-lg bg-warning text-white badge-outline py-4 px-4">Non Aktif</div>
+                            @endif
+                        </td>
                         <td>{{ \Carbon\Carbon::parse($item->created_at)->diffForHumans() }}</td>
                         <td>
                             <div class="flex justify-center items-center gap-2">
