@@ -19,7 +19,7 @@
                 <form method="dialog" class="absolute right-6 top-6 z-99">
                     <button class="btn btn-sm btn-circle btn-ghost bg-slate-500 text-white font-bold">✕</button>
                 </form>
-                <div class="modal-box h-[90vh] p-0 max-w-5xl overflow-hidden rounded">
+                <div class="modal-box modal-box-image h-[90vh] p-0 max-w-5xl overflow-hidden rounded">
                     <img src={{ asset('imageActivity/'.$a->image) }} class="object-contain object-center w-[100%] h-[100%]"/>
                 </div>
                 <form method="dialog" class="modal-backdrop">

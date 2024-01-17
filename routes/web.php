@@ -38,6 +38,7 @@ Route::controller(AuthController::class)->group(function () {
     })->name('password.reset')->middleware('isGuest');
     Route::post('/auth/reset-password', 'resetPassword')->name('password.update')->middleware('isGuest');
     Route::post('/logout', 'logout')->name('logout')->middleware('isLogin');
+    Route::get('/redirect/logout', 'redirectLogout')->name('redirect.logout')->middleware('isLogin');
 
     Route::get('/auth/verify', 'show')->name('verification.notice')->middleware('auth');
     Route::get('/auth/verify/{id}/{hash}', 'verify')->name('verification.verify')->middleware(['auth','signed']);
@@ -112,4 +113,12 @@ Route::controller(AdminController::class)->group(function () {
     Route::patch('/admin/cash/{id}/update', 'updateCash')->name('admin.cash.update')->middleware(['isLogin', 'isAdmin']);
     Route::delete('/admin/cash/{id}', 'destroyCash')->name('admin.cash.destroy')->middleware(['isLogin', 'isAdmin']);
     Route::get('/admin/cash/export', 'exportCash')->name('admin.cash.export')->middleware('isLogin');
+
+    Route::get('/admin/spending', 'listSpending')->name('admin.spending')->middleware('isLogin');
+    Route::get('/admin/spending/create', 'createSpending')->name('admin.spending.create')->middleware(['isLogin', 'isAdmin']);
+    Route::post('/admin/spending/store', 'storeSpending')->name('admin.spending.store')->middleware(['isLogin', 'isAdmin']);
+    Route::get('/admin/spending/{id}/edit', 'editSpending')->name('admin.spending.edit')->middleware(['isLogin', 'isAdmin']);
+    Route::patch('/admin/spending/{id}/update', 'updateSpending')->name('admin.spending.update')->middleware(['isLogin', 'isAdmin']);
+    Route::delete('/admin/spending/{id}', 'destroySpending')->name('admin.spending.destroy')->middleware(['isLogin', 'isAdmin']);
+    Route::get('/admin/spending/export', 'exportSpending')->name('admin.spending.export')->middleware('isLogin');
 });

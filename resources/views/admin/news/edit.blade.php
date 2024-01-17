@@ -26,6 +26,9 @@
                   <span class="label-text-alt">Maksimal ukuran gambar adalah 10 MB</span>
                 </label>
                 <input id="input_image" name="image" type="file" class="file-input file-input-lg file-input-bordered w-full" accept="image/*" />
+                <label class="label">
+                    <span id="error_input_image" class="label-text font-semibold text-error"></span>
+                </label>
             </div>
             <div class="col-span-2 form-control">
                 <label class="label">
@@ -62,10 +65,10 @@
                 <textarea id="myeditorinstance" name="content" class="textarea textarea-lg textarea-bordered">
                     {{ $data->content }}
                 </textarea>
-            </div>
+            </div> 
             <div class="col-span-2 flex justify-end gap-2">
                 <a href="{{ url()->previous() }}" class="btn btn-lg">Cancel</a>
-                <button type="submit" class="btn btn-lg btn-primary btn-cta">Save Changes</button>
+                <button id="btn-submit" type="submit" class="btn btn-lg btn-primary btn-cta">Save Changes</button>
             </div>
         </form>
     </div>
@@ -73,11 +76,22 @@
 <script>
     document.getElementById('input_image').addEventListener('change', function(e) {
         let file = e.target.files[0];
+        let fileSize = e.target.files[0].size;
+        let sizeLimit = 10000;
+        let fileSizeInKB = (fileSize/1024);
         let reader = new FileReader();
 
         reader.onload = function() {
             document.getElementById('image').setAttribute('src', reader.result);
         };
+
+        if(fileSizeInKB < sizeLimit){
+            document.getElementById('btn-submit').removeAttribute('disabled', '');
+            document.getElementById('error_input_image').innerHTML = "";
+        } else {
+            document.getElementById('btn-submit').setAttribute('disabled', '');
+            document.getElementById('error_input_image').innerHTML = "Ukuran gambar melebihi 10mb";
+        }
 
         if (file) {
             reader.readAsDataURL(file);

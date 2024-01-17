@@ -23,6 +23,9 @@
                   <span class="label-text font-semibold">Image<span class="text-red-400">*</span></span>
                 </label>
                 <input id="input_image" name="image" type="file" class="file-input file-input-lg file-input-bordered w-full" />
+                <label class="label">
+                    <span id="error_input_image" class="label-text font-semibold text-error"></span>
+                </label>
             </div>
             <div class="col-span-2 form-control">
                 <label class="label">
@@ -45,8 +48,9 @@
                 <input type="text" name="description" class="input input-lg input-bordered" value="{{ old('description') }}" />
             </div>
             <div class="col-span-2 flex justify-end gap-2">
-                <button type="reset" class="btn btn-lg">Reset</button>
-                <button type="submit" class="btn btn-lg btn-cta btn-primary">Create</button>
+                <a href="{{ url()->previous() }}" class="btn btn-lg">Cancel</a>
+                <button type="reset" class="btn btn-lg btn-cta btn-secondary">Reset</button>
+                <button id="btn-submit" type="submit" class="btn btn-lg btn-cta btn-primary">Create</button>
             </div>
         </form>
     </div>
@@ -54,11 +58,22 @@
 <script>
     document.getElementById('input_image').addEventListener('change', function(e) {
         let file = e.target.files[0];
+        let fileSize = e.target.files[0].size;
+        let sizeLimit = 10000;
+        let fileSizeInKB = (fileSize/1024);
         let reader = new FileReader();
 
         reader.onload = function() {
             document.getElementById('image').setAttribute('src', reader.result);
         };
+
+        if(fileSizeInKB < sizeLimit){
+            document.getElementById('btn-submit').removeAttribute('disabled', '');
+            document.getElementById('error_input_image').innerHTML = "";
+        } else {
+            document.getElementById('btn-submit').setAttribute('disabled', '');
+            document.getElementById('error_input_image').innerHTML = "Ukuran gambar melebihi 10mb";
+        }
 
         if (file) {
             reader.readAsDataURL(file);

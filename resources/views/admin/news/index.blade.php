@@ -78,7 +78,7 @@
                         </td>
                     </tr>
                     <dialog id="modalConfirm{{ $item->id }}" class="modal bg-base-200 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-10">
-                        <div class="modal-box prose-lg">
+                        <div class="modal-box prose-lg bg-base-100">
                             <h3 class="font-bold text-lg mb-4 text-center">Konfirmasi Hapus</h3>
                             <p class="text-center">Apakah anda yakin ingin menghapus ?</p>
                             <div class="modal-action">

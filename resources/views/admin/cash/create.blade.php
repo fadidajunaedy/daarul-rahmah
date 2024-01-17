@@ -36,7 +36,8 @@
                 <input id="amount" type="string" name="amount" class="input input-lg input-bordered" onKeyPress="return goodchars(event,'0123456789',this)" value="{{ old('amount') }}" />
             </div>
             <div class="col-span-2 flex justify-end gap-2">
-                <button type="reset" class="btn btn-lg">Reset</button>
+                <a href="{{ url()->previous() }}" class="btn btn-lg">Cancel</a>
+                <button type="reset" class="btn btn-lg btn-cta btn-secondary">Reset</button>
                 <button type="submit" class="btn btn-lg btn-cta btn-primary">Create</button>
             </div>
         </form>

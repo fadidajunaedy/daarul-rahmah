@@ -63,6 +63,7 @@
                 </div>
             </div>
             <div class="col-span-2 flex justify-end gap-2">
+                <a href="{{ url()->previous() }}" class="btn btn-lg">Cancel</a>
                 <button type="submit" class="btn btn-lg btn-primary btn-cta">Save Changes</button>
             </div>
         </form>

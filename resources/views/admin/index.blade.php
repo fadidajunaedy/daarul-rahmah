@@ -2,7 +2,7 @@
 @section('title', "Daarul Rahmah - Dashboard")
 @section('content')
 <section class="min-h-screen">
-  <h2 class="">Hello {{auth()->user()->name }}, <br> Selamat datang di dashboard Surat Digital: 005/014</h2>
+  <h2 class="">Hello {{auth()->user()->name }}, <br> Selamat datang di dashboard Daarul Rahmah</h2>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
     @if ((auth()->user()->role == "admin") || (auth()->user()->role == "super-admin"))     
     <div class="stats shadow">
@@ -65,6 +65,31 @@
             <div class="text-2xl font-bold">@currency($totalJumlahKas)</div>
         </div>
     </div>
+    <div class="stats shadow">
+        <div class="stat">
+            <div class="stat-figure text-green-500">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-cash-stack" viewBox="0 0 16 16">
+                    <path d="M1 3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zm7 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4"/>
+                    <path d="M0 5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1zm3 0a2 2 0 0 1-2 2v4a2 2 0 0 1 2 2h10a2 2 0 0 1 2-2V7a2 2 0 0 1-2-2z"/>
+                  </svg>
+            </div>
+            <div class="stat-title mb-4">Total Pengeluaran</div>
+            <div class="text-2xl font-bold mb-4">@currency($totalJumlahPengeluaran)</div>
+        </div>
+    </div>
+    <div class="stats shadow">
+        <div class="stat">
+            <div class="stat-figure text-green-500">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-wallet" viewBox="0 0 16 16">
+                    <path d="M0 3a2 2 0 0 1 2-2h13.5a.5.5 0 0 1 0 1H15v2a1 1 0 0 1 1 1v8.5a1.5 1.5 0 0 1-1.5 1.5h-12A2.5 2.5 0 0 1 0 12.5zm1 1.732V12.5A1.5 1.5 0 0 0 2.5 14h12a.5.5 0 0 0 .5-.5V5H2a2 2 0 0 1-1-.268M1 3a1 1 0 0 0 1 1h12V2H2a1 1 0 0 0-1 1"/>
+                  </svg>
+            </div>
+            <div class="stat-title mb-4">Total Saldo</div>
+            <div class="text-2xl font-bold mb-4">@currency($totalJumlahDonasiDanKas - $totalJumlahPengeluaran)</div>
+            <div className="stat-desc">Donasi dan Kas</div>
+        </div>
+    </div>
+    
   </div>
 </section>
 @endsection

@@ -8,12 +8,12 @@
         <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05"/>
     </svg>
     <h2 class="text-center">{{ session('verified') }}</h2>
-    <p>Beralih ke halaman utama...</p>
+    <p>Beralih ke Login...</p>
     @endif
 </div>
 <script>
     setTimeout(function(){
-        window.location.href ="{{ url('/') }}";
+        window.location.href ="{{ route('redirect.logout') }}";
     }, 3000);
 </script>
 @endsection

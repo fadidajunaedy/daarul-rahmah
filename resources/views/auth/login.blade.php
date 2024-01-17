@@ -30,6 +30,7 @@
         <button type="submit" class="btn btn-lg btn-cta btn-primary">Login</button>
         <a href={{ route('password.request') }} class="link text-center">Lupa Password?</a>
         <span class="text-center">Belum punya akun?&nbsp;<a href={{ route("register") }} class="link">Register</a></span>
+        <a href={{ route("client") }} class="text-center link">ke Halaman Utama</a>
     </form>
 </div>
 <script>

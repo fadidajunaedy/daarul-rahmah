@@ -61,6 +61,7 @@
         </label>
         <button type="submit" class="btn btn-lg btn-cta btn-primary">Register</button>
         <span class="text-center">Sudah punya akun?&nbsp;<a href={{ route("login") }} class="link">Login</a></span>
+        <a href={{ route("client") }} class="text-center link">ke Halaman Utama</a>
     </form>
 </div>
 <script>

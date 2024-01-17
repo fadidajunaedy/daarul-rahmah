@@ -37,6 +37,9 @@
                   <span class="label-text-alt">Maksimal ukuran gambar adalah 10 MB</span>
                 </label>
                 <input id="input_hero" name="hero" type="file" class="file-input file-input-lg file-input-bordered w-full" accept="image/*"/>
+                <label class="label">
+                    <span id="error_input_hero" class="label-text font-semibold text-error"></span>
+                </label>
             </div>
             <div class="col-span-2 form-control">
                 <label class="label">
@@ -54,7 +57,8 @@
                 </figure>
             </div>
             <div class="col-span-2 flex justify-end gap-2">
-                <button type="submit" class="btn btn-lg btn-primary btn-cta">Save Changes</button>
+                <a href="{{ url()->previous() }}" class="btn btn-lg">Cancel</a>
+                <button id="btn-submit" type="submit" class="btn btn-lg btn-primary btn-cta">Save Changes</button>
             </div>
         </form>
         <div class="col-span-1 bg-base-100 p-6 rounded-xl shadow-xl flex flex-col gap-2 h-[160px]">
@@ -68,11 +72,23 @@
 <script>
     document.getElementById('input_hero').addEventListener('change', function(e) {
         let file = e.target.files[0];
+        let fileSize = e.target.files[0].size;
+        let sizeLimit = 10000;
+        let fileSizeInKB = (fileSize/1024);
         let reader = new FileReader();
 
         reader.onload = function() {
             document.getElementById('hero').setAttribute('src', reader.result);
         };
+
+        
+        if(fileSizeInKB < sizeLimit){
+            document.getElementById('btn-submit').removeAttribute('disabled', '');
+            document.getElementById('error_input_hero').innerHTML = "";
+        } else {
+            document.getElementById('btn-submit').setAttribute('disabled', '');
+            document.getElementById('error_input_hero').innerHTML = "Ukuran gambar melebihi 10mb";
+        }
 
         if (file) {
             reader.readAsDataURL(file);

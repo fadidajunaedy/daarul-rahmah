@@ -11,6 +11,7 @@ use App\Models\Activity;
 use App\Models\News;
 use App\Models\Donate;
 use App\Models\Cash;
+use App\Models\Spending;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -28,7 +29,9 @@ class AdminController extends Controller
         $totalBerita = News::count();
         $totalJumlahDonasi = Donate::sum('amount');
         $totalJumlahKas = Cash::sum('amount');
-        return view('admin.index', compact('totalAnggota', 'totalAdmin', 'totalBerita', 'totalJumlahDonasi', 'totalJumlahKas'));
+        $totalJumlahDonasiDanKas = Donate::sum('amount') + Cash::sum('amount');
+        $totalJumlahPengeluaran = Spending::sum('amount');
+        return view('admin.index', compact('totalAnggota', 'totalAdmin', 'totalBerita', 'totalJumlahDonasi', 'totalJumlahKas', 'totalJumlahDonasiDanKas', 'totalJumlahPengeluaran'));
     }
 
     public function editProfile() {
@@ -96,9 +99,10 @@ class AdminController extends Controller
         $validator = Validator::make($request->all(), [
             'headline' => ['required', 'string'],
             'body' => ['required', 'string'],
-            'hero' => ['mimes:jpeg,jpg,png', 'max:10000']
+            'hero' => ['mimes:jpeg,jpg,png', 'max:10240']
         ], [
-            'required' => 'Kolom :attribute harus diisi.'
+            'required' => 'Kolom :attribute harus diisi.',
+            'hero.max' => 'Ukuran file gambar tidak boleh melebihi 10MB.'
         ]);
     
         if ($validator->fails()) {
@@ -282,7 +286,7 @@ class AdminController extends Controller
         if (strlen($keyword)) {
             $data = Activity::where('title', 'like', "%$keyword%")->orwhere('description', 'like', "%$keyword%")->paginate(10);
         } else {
-            $data = Activity::orderBy('created_at', 'asc')->paginate(10); 
+            $data = Activity::orderBy('created_at', 'desc')->paginate(10); 
         }
         return view('admin.activity.index')->with('data', $data);
     }
@@ -403,7 +407,7 @@ class AdminController extends Controller
                     ->orWhere('email', 'like', "%$keyword%");
                 })->paginate(10);
         } else {
-            $data = User::where('role', 'anggota')->orderBy('created_at', 'asc')->paginate(10); 
+            $data = User::where('role', 'anggota')->orderBy('created_at', 'desc')->paginate(10); 
         }
         return view('admin.anggota.index')->with('data', $data);
     }
@@ -525,7 +529,7 @@ class AdminController extends Controller
                     ->orWhere('email', 'like', "%$keyword%");
                 })->paginate(10);
         } else {
-            $data = User::where('role', 'admin')->orderBy('created_at', 'asc')->paginate(10); 
+            $data = User::where('role', 'admin')->orderBy('created_at', 'desc')->paginate(10); 
         }
         return view('admin.admin.index')->with('data', $data);
     }
@@ -641,7 +645,7 @@ class AdminController extends Controller
         if (strlen($keyword)) {
             $data = News::where('title', 'like', "%$keyword%")->paginate(10);
         } else {
-            $data = News::orderBy('created_at', 'asc')->paginate(10); 
+            $data = News::orderBy('created_at', 'desc')->paginate(10); 
         }
         return view('admin.news.index')->with('data', $data);
     }
@@ -654,12 +658,13 @@ class AdminController extends Controller
     public function storeNews(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'image' => ['required', 'mimes:jpeg,jpg,png', 'max:10000'],
+            'image' => ['required', 'mimes:jpeg,jpg,png', 'max:10240'],
             'title' => ['required', 'string'],
             'date' => ['required', 'string'],
             'content' => ['required', 'string'],
         ], [
-            'required' => 'Kolom :attribute harus diisi.'
+            'required' => 'Kolom :attribute harus diisi.',
+            'image.max' => 'Ukuran file gambar tidak boleh melebihi 10MB.'
         ]);
     
         if ($validator->fails()) {
@@ -696,12 +701,13 @@ class AdminController extends Controller
 
     public function updateNews(Request $request, string $id) {
         $validator = Validator::make($request->all(), [
-            'image' => ['required', 'mimes:jpeg,jpg,png', 'max:10000'],
+            'image' => ['required', 'mimes:jpeg,jpg,png', 'max:10240'],
             'title' => ['required', 'string'],
             'date' => ['required', 'string'],
             'content' => ['required', 'string'],
         ], [
-            'required' => 'Kolom :attribute harus diisi.'
+            'required' => 'Kolom :attribute harus diisi.',
+            'image.max' => 'Ukuran file gambar tidak boleh melebihi 10MB.'
         ]);
     
         if ($validator->fails()) {
@@ -784,7 +790,7 @@ class AdminController extends Controller
             ->orwhere('amount', 'like', "%$keyword%")
             ->orwhere('createdUser', 'like', "%$keyword%")->paginate(10);
         } else {
-            $data = Donate::orderBy('created_at', 'asc')->paginate(10); 
+            $data = Donate::orderBy('created_at', 'desc')->paginate(10); 
         }
         return view('admin.donate.index')->with('data', $data);
     }
@@ -900,7 +906,7 @@ class AdminController extends Controller
             ->orwhere('amount', 'like', "%$keyword%")
             ->orwhere('createdUser', 'like', "%$keyword%")->paginate(10);
         } else {
-            $data = Cash::orderBy('created_at', 'asc')->paginate(10); 
+            $data = Cash::orderBy('created_at', 'desc')->paginate(10); 
         }
         return view('admin.cash.index')->with('data', $data);
     }
@@ -1004,5 +1010,154 @@ class AdminController extends Controller
 
         return Response::make('', 200, $headers);
     }
+
+     // Spending
+     public function listSpending(Request $request)
+     {   
+         $keyword = $request->keyword;
+ 
+         if (strlen($keyword)) {
+             $data = Spending::where('needs', 'like', "%$keyword%")
+             ->orwhere('date', 'like', "%$keyword%")
+             ->orwhere('amount', 'like', "%$keyword%")
+             ->orwhere('description', 'like', "%$keyword%")
+             ->orwhere('createdUser', 'like', "%$keyword%")->paginate(10);
+         } else {
+             $data = Spending::orderBy('created_at', 'desc')->paginate(10); 
+         }
+         return view('admin.spending.index')->with('data', $data);
+     }
+ 
+     public function createSpending()
+     {
+         return view('admin.spending.create');
+     }
+ 
+     public function storeSpending(Request $request)
+     {
+         $validator = Validator::make($request->all(), [
+            'needs' => ['required', 'string'],
+            'date' => ['required', 'string'],
+            'amount' => ['required', 'string'],
+            'receipt' => ['mimes:jpeg,jpg,png,pdf', 'max:10240'],
+            // 'description' => ['string'],
+         ], [
+             'required' => 'Kolom :attribute harus diisi.'
+         ]);
+     
+         if ($validator->fails()) {
+             return redirect()->back()->withErrors($validator)->withInput();
+         }
+
+         $receipt_name = null;
+         if ($request->hasFile('receipt')) {
+             $receipt = $request->file('receipt');
+             $receipt_extension = $receipt->extension();
+             $receipt_name = date('ymdhis').".".$receipt_extension;
+             $receipt->move(public_path('imageReceipt'), $receipt_name);
+ 
+         } else {
+             $receipt_name = null;
+         }
+ 
+ 
+         $amount = str_replace('.', '', trim($request->amount));
+         Spending::create([
+             'needs' => $request->needs,
+             'date' => $request->date,
+             'amount' => $amount,
+             'receipt' => $receipt_name,
+             'description' => $request->description,
+             'createdUser' => auth()->user()->username
+         ]);
+ 
+         return redirect()->route('admin.spending')->with('success', 'Berhasil create data!');
+     }
+ 
+     public function editSpending(string $id)
+     {
+         $data = Spending::where('id', $id)->first();
+         return view('admin.spending.edit')->with('data', $data);
+     }
+ 
+     public function updateSpending(Request $request, string $id)
+     {
+         $validator = Validator::make($request->all(), [
+             'needs' => ['required', 'string'],
+             'date' => ['required', 'string'],
+             'amount' => ['required', 'string'],
+             'receipt' => ['mimes:jpeg,jpg,png,pdf', 'max:10240'],
+            //  'description' => ['string']
+         ], [
+             'required' => 'Kolom :attribute harus diisi.'
+         ]);
+     
+         if ($validator->fails()) {
+             return redirect()->back()->withErrors($validator)->withInput();
+         }
+ 
+         $spending = Spending::where('id', $id)->first();
+         if (!$spending) {
+             return redirect()->back()->withErrors("Pengeluaran tidak ditemukan")->withInput();
+         }
+ 
+         $amount = str_replace('.', '', trim($request->amount));
+         $data = [
+             'needs' => $request->needs,
+             'date' => $request->date,
+             'amount' => $amount,
+             'description' => $request->description,
+         ];
+
+         if ($request->hasFile('receipt')) {
+            $receipt = $request->file('receipt');
+            $receipt_extension = $receipt->extension();
+            $receipt_name = date('ymdhis').".".$receipt_extension;
+            $receipt->move(public_path('imageReceipt'), $receipt_name);
+
+            File::delete(public_path('imageReceipt').'/'.$spending->receipt);
+            $data['receipt'] = $receipt_name;
+        } else {
+            unset($data['receipt']);
+        }
+ 
+         Spending::where('id', $id)->update($data);
+         return redirect()->back()->with('success', 'Berhasil update data!');;
+     }
+ 
+     public function destroySpending(string $id)
+     {
+         $spending = Spending::where('id', $id)->first();
+ 
+         if (!$spending) {
+             return redirect()->back()->withErrors("Receipt tidak ditemukan")->withInput();
+         }
+
+         File::delete(public_path('imageReceipt').'/'.$spending->receipt);
+         Spending::where('id', $id)->delete();
+ 
+         return redirect()->back()->with('success', 'Berhasil delete data!');
+     }
+ 
+     public function exportSpending()
+     {
+         $spending = Spending::all();
+         $csvFileName = 'spending.csv';
+         $headers = [
+             'Content-Type' => 'text/csv',
+             'Content-Disposition' => 'attachment; filename="' . $csvFileName . '"',
+         ];
+ 
+         $handle = fopen('php://output', 'w');
+         fputcsv($handle, ['Keperluan', 'Tanggal', 'Jumlah', 'Bukti Pembayaran', 'Diunggah oleh', 'Tanggal unggah']); // Add more headers as needed
+ 
+         foreach ($spending as $s) {
+             fputcsv($handle, [$s->needs, $s->date, $s->amount, $s->receipt, $s->createdUser, $s->created_at]); // Add more fields as needed
+         }
+ 
+         fclose($handle);
+ 
+         return Response::make('', 200, $headers);
+     }
 
 }

@@ -82,7 +82,8 @@
                 </div>
             </label>
             <div class="col-span-2 flex justify-end gap-2">
-                <button type="reset" class="btn btn-lg">Reset</button>
+                <a href="{{ url()->previous() }}" class="btn btn-lg">Cancel</a>
+                <button type="reset" class="btn btn-lg btn-cta btn-secondary">Reset</button>
                 <button type="submit" class="btn btn-lg btn-cta btn-primary">Create</button>
             </div>
         </form>

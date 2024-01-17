@@ -20,8 +20,8 @@ class ClientController extends Controller
         $home = Home::where('id', 1)->first();
         $about = About::where('id', 1)->first();
         $mision = Mision::where('about_id', 1)->get();
-        $activity = Activity::orderBy('created_at', 'asc')->take(3)->get();
-        $news = News::orderBy('created_at', 'asc')->take(3)->get();
+        $activity = Activity::orderBy('created_at', 'desc')->take(3)->get();
+        $news = News::orderBy('created_at', 'desc')->take(3)->get();
         $contact = Contact::where('id', 1)->first();
         return view('client.index', compact('home', 'about', 'mision', 'activity', 'news', 'contact'));
     }
